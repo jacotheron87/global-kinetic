@@ -13,11 +13,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="java-test" />
+        <module name="java-test-core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="global-kinetic" target="1.5" />
-      <module name="java-test" target="1.5" />
+      <module name="java-test" target="1.8" />
+      <module name="java-test-core" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

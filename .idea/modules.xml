@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/global-kinetic.iml" filepath="$PROJECT_DIR$/.idea/global-kinetic.iml" />
       <module fileurl="file://$PROJECT_DIR$/java-test/java-test.iml" filepath="$PROJECT_DIR$/java-test/java-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java-test/java-test-core/java-test-core.iml" filepath="$PROJECT_DIR$/java-test/java-test-core/java-test-core.iml" />
     </modules>
   </component>
 </project>
