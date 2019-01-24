@@ -30,4 +30,8 @@ public class User {
         this.phone = phone;
     }
 
+    public String toString(){
+        return "Id : '" + this.id + "', Phone : '" + this.phone + "'";
+    }
+
 }
