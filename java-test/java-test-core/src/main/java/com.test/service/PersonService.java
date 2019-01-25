@@ -3,13 +3,16 @@ package com.test.service;
 import com.test.adapter.PersonAdapter;
 import com.test.adapter.UserAdapter;
 import com.test.domain.Person;
+import com.test.dto.LoginResponse;
 import com.test.dto.User;
 import com.test.dto.UserRequest;
 import com.test.dto.UsersResponse;
 import com.test.repository.PersonRepository;
+import com.test.utils.JWTUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,16 +27,22 @@ public class PersonService {
     private PersonAdapter personAdapter;
     private UserAdapter userAdapter;
     private PersonRepository personRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private JWTUtils jwtUtils;
 
     @Autowired
-    public PersonService(PersonAdapter personAdapter, UserAdapter userAdapter, PersonRepository personRepository) {
+    public PersonService(PersonAdapter personAdapter, UserAdapter userAdapter, PersonRepository personRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JWTUtils jwtUtils) {
         this.personAdapter = personAdapter;
         this.userAdapter = userAdapter;
         this.personRepository = personRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.jwtUtils = jwtUtils;
     }
 
     public void saveUser(UserRequest user) {
         Person person = userAdapter.toDo(user);
+        logger.info(person.toString());
+        person.setPassword(bCryptPasswordEncoder.encode(person.getPassword()));
         logger.info(person.toString());
         personRepository.save(person);
     }
@@ -58,5 +67,19 @@ public class PersonService {
 
         return usersResponse;
 
+    }
+
+    public LoginResponse login(UserRequest userRequest){
+        LoginResponse loginResponse = new LoginResponse();
+        Person user = personRepository.findByUsername(userRequest.getUsername());
+        if (user != null){
+            Boolean match = bCryptPasswordEncoder.matches(userRequest.getPassword(),user.getPassword());
+            logger.info(match.toString());
+            if (bCryptPasswordEncoder.matches(userRequest.getPassword(),user.getPassword())) {
+                loginResponse.setId(user.getId());
+                loginResponse.setToken(jwtUtils.authenticate(userRequest));
+            }
+        }
+        return loginResponse;
     }
 }

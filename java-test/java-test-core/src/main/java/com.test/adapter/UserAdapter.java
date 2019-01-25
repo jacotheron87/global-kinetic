@@ -15,8 +15,8 @@ public class UserAdapter {
 
         Person person = new Person();
         person.setUsername(user.getUsername());
-        person.setPhone(user.getPhone());
         person.setPassword(user.getPassword());
+        person.setPhone(user.getPhone());
 
         return person;
     }

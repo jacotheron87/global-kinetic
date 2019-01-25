@@ -1,5 +1,6 @@
 package com.test.controller;
 
+import com.test.dto.LoginResponse;
 import com.test.dto.UserRequest;
 import com.test.dto.UsersResponse;
 import com.test.service.PersonService;
@@ -23,17 +24,25 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @PutMapping(value = "/users", produces = "application/json")
+    @PutMapping(value = "/public/users", produces = "application/json")
     public ResponseEntity<Object> saveUser(@RequestBody UserRequest userRequest) {
         personService.saveUser(userRequest);
         return new ResponseEntity<Object>(HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/users", produces = "application/json")
+    @GetMapping(value = "/private/users", produces = "application/json")
     public ResponseEntity<Object> getUsers() {
 
         UsersResponse usersResponse = personService.getUsers();
 
         return new ResponseEntity<Object>(usersResponse, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/public/login", produces = "application/json")
+    public ResponseEntity<Object> login(@RequestBody UserRequest userRequest){
+
+        LoginResponse loginResponse = personService.login(userRequest);
+
+        return new ResponseEntity<Object>(loginResponse, HttpStatus.OK);
     }
 }
